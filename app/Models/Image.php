@@ -16,13 +16,29 @@ class Image extends Model
     protected $fillable = [ 'url' ];
 
     /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        self::deleted(function (Image $item) {
+            $item->deleteImage();
+
+            return true;
+        });
+    }
+
+    /**
      * Return thumbnail url
      *
      * @return string
      */
     public function getThumbnailUrlAttribute()
     {
-       return asset('storage/' . $this->imageable_type::IMAGE_FOLDER . 'thumbnail/' . $this->url);
+       return asset('storage/' . $this->imageable_type_class::IMAGE_FOLDER . 'thumbnail/' . $this->url);
     }
 
     /**
@@ -69,17 +85,5 @@ class Image extends Model
         Storage::delete("public/" . $this->imageable_type_class::IMAGE_FOLDER . 'thumbnail/' . $this->url);
 
         return Storage::delete("public/" . $this->imageable_type_class::IMAGE_FOLDER . $this->url);
-    }
-
-    /**
-     * Override
-     *
-     * @return void
-     */
-    public function delete()
-    {
-        $this->deleteImage();
-
-        return parent::delete();
     }
 }

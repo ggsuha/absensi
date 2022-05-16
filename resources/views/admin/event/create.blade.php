@@ -36,7 +36,7 @@
                             </div> --}}
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form target="{{ route('admin.event.store') }}" method="POST">
+                            <form target="{{ route('admin.event.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="subtitle">Description (Optional)</label>
-                                        <textarea class="form-control" rows="5" placeholder="Enter ..." >{{ old('description') }}</textarea>
+                                        <textarea class="form-control" rows="5" placeholder="Enter ..." name="description">{{ old('description') }}</textarea>
                                     </div>
 
                                     <!-- /.card-body -->
@@ -112,7 +112,10 @@
                 showDropdowns: true,
                 minYear: 2021,
                 maxYear: parseInt(moment().format('YYYY'),10),
-                minDate: moment().startOf('hour')
+                minDate: moment().startOf('hour'),
+                // locale: {
+                //     format: 'M-D'
+                // }
             }, function(start, end, label) {
                 // $('input[name="startdate"]').val(start);
             });

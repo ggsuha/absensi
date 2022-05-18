@@ -25,3 +25,9 @@ Breadcrumbs::for('event.add', function (BreadcrumbTrail $trail) {
     $trail->parent('event');
     $trail->push('Add New', route('admin.event.create'));
 });
+
+// Home > Event > Edit
+Breadcrumbs::for('event.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('event');
+    $trail->push('Edit Event');
+});

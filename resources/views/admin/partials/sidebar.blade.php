@@ -51,14 +51,6 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.project.index') }}" class="nav-link {{ (Route::is('admin.project.*')) ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tasks"></i>
-                        <p>
-                            Projects
-                        </p>
-                    </a>
-                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

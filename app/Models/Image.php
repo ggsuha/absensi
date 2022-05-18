@@ -29,6 +29,12 @@ class Image extends Model
 
             return true;
         });
+
+        self::updating(function (Image $item) {
+            $item->getRawOriginal()->deleteImage();
+
+            return true;
+        });
     }
 
     /**

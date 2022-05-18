@@ -28,7 +28,7 @@
                         <h1 class="m-0">Event List</h1>
                     </div><!-- /.col -->
 
-                    {{ Breadcrumbs::render('project') }}
+                    {{ Breadcrumbs::render('event') }}
 
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -44,7 +44,7 @@
                             <div class="card-header">
                                 {{-- <h3 class="card-title">Bordered Table</h3> --}}
                                 <h3 class="card-title" style="float: right">
-                                    <a href="{{ route('admin.project.create') }}" class="btn btn-primary btn">
+                                    <a href="{{ route('admin.event.create') }}" class="btn btn-primary btn">
                                         Add New
                                     </a>
                                 </h3>
@@ -55,20 +55,23 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 10px">#</th>
-                                            <th>Project</th>
+                                            <th>Title</th>
                                             <th style="width: 150px">Date</th>
-                                            <th style="width: 180px">Action</th>
+                                            <th style="width: 150px">Status</th>
+                                            <th style="width: 260px">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($projects as $project)
+                                        @foreach ($events as $event)
                                         <tr>
                                             <td>{{ $offset + $loop->iteration }}</td>
-                                            <td>{{ $project->title }}</td>
-                                            <td>{{ $project->created_at->format('d M Y') }}</td>
+                                            <td>{{ $event->title }}</td>
+                                            <td>{{ $event->start->format('d M Y') }}</td>
+                                            <td>status</td>
                                             <td>
-                                                <button type="button" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</button> 
+                                                <a href="{{ route('admin.event.edit', ['event' => $event->id]) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Edit</a> 
                                                 <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
+                                                <button type="button" class="btn btn-info btn-sm"><i class="fas fa-users"></i> Users</button>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -76,7 +79,7 @@
                                 </table>
                             </div>
                             <!-- /.card-body -->
-                            {{ $projects->links() }}
+                            {{ $events->links() }}
                         </div>
                         <!-- /.card -->
                     </div>

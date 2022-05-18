@@ -31,11 +31,8 @@ Route::name('admin.')->group(function(){
             Route::get('/', [EventController::class, 'index'])->name('index');
             Route::get('/create', [EventController::class, 'create'])->name('create');
             Route::post('/create', [EventController::class, 'store'])->name('store');
-        });
-
-        Route::group(['prefix' => 'project', 'as' => 'project.'], function () {
-            Route::get('/', [ProjectController::class, 'index'])->name('index');
-            Route::get('/create', [ProjectController::class, 'create'])->name('create');
+            Route::get('/edit/{event}', [EventController::class, 'edit'])->name('edit');
+            Route::post('/edit/{event}', [EventController::class, 'update'])->name('update');
         });
 
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

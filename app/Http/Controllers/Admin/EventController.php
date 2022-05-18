@@ -21,9 +21,9 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $offset   = (($request->page ?? 1) - 1) * 10;
-        $projects = Event::offset($offset)->paginate(10);
+        $events = Event::offset($offset)->paginate(10);
 
-        return view('admin.event.index', compact('projects', 'offset'));
+        return view('admin.event.index', compact('events', 'offset'));
     }
 
     /**
@@ -31,21 +31,22 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
         return view('admin.event.create');
     }
 
     /**
-     * Display a create page.
+     * Store data.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         DB::beginTransaction();
         try {
-            $request['start'] = Carbon::createFromFormat('d/m/Y', $request->start)->format('Y-m-d');
+            $request['start'] = Carbon::createFromFormat('m/d/Y', $request->start)->format('Y-m-d');
 
             $event = new Event($request->input());
 
@@ -71,9 +72,60 @@ class EventController extends Controller
             throw $th;
         }
         
-        //temporary -> considered to use update
         return redirect()
-                ->route('admin.event.index')
+                ->route('admin.event.edit', ['event' => $event->id])
                 ->with('success', 'Event has been save!');
+    }
+
+    /**
+     * Display a edit page.
+     *
+     * @return \App\Models\Event  $event
+     */
+    public function edit(Event $event)
+    {
+        return view('admin.event.edit', compact('event'));
+    }
+
+    /**
+     * Update data.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Event $event
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Event $event)
+    {
+        DB::beginTransaction();
+        try {
+            $request['start'] = Carbon::createFromFormat('m/d/Y', $request->start)->format('Y-m-d');
+
+            $event->title       = $request->title;
+            $event->description = $request->description;
+            $event->start       = $request->start;
+
+            $event->save();
+
+            ini_set('memory_limit', '1024M');
+
+            if ($request->logo) {
+                $imageName = $this->storeImage($request->logo, Event::IMAGE_FOLDER, null, true);
+    
+                $event->image()->update([
+                    'url' => $imageName
+                ]);
+            }
+
+            DB::commit();
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+
+            throw $th;
+        }
+        
+        return redirect()
+                ->route('admin.event.edit', ['event' => $event->id])
+                ->with('success', 'Event has been updated!');
     }
 }

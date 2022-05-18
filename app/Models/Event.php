@@ -29,6 +29,15 @@ class Event extends Model
     }
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'start' => 'datetime:Y-m-d',
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

@@ -128,4 +128,18 @@ class EventController extends Controller
                 ->route('admin.event.edit', ['event' => $event->id])
                 ->with('success', 'Event has been updated!');
     }
+
+    /**
+     * Delete data.
+     *
+     * @return \App\Models\Event  $event
+     */
+    public function destroy(Event $event)
+    {
+        $event->delete();
+
+        return redirect()
+                ->route('admin.event.index')
+                ->with('success', 'Event has been deleted!');
+    }
 }

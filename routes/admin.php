@@ -27,13 +27,7 @@ Route::name('admin.')->group(function(){
             return view('admin.dashboard');
         })->name('dashboard');
 
-        Route::group(['prefix' => 'event', 'as' => 'event.'], function () {
-            Route::get('/', [EventController::class, 'index'])->name('index');
-            Route::get('/create', [EventController::class, 'create'])->name('create');
-            Route::post('/create', [EventController::class, 'store'])->name('store');
-            Route::get('/edit/{event}', [EventController::class, 'edit'])->name('edit');
-            Route::post('/edit/{event}', [EventController::class, 'update'])->name('update');
-        });
+        Route::resource('event', 'EventController');
 
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     });

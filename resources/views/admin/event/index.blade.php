@@ -40,6 +40,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
+                        @if (session('success'))
+                            <div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                                <h5><i class="icon fas fa-check"></i> Success!</h5>
+                                {{ session('success') }}
+                            </div>
+                        @endif
                         <div class="card">
                             <div class="card-header">
                                 {{-- <h3 class="card-title">Bordered Table</h3> --}}
@@ -58,7 +66,7 @@
                                             <th>Title</th>
                                             <th style="width: 150px">Date</th>
                                             <th style="width: 150px">Status</th>
-                                            <th style="width: 260px">Action</th>
+                                            <th style="width: 270px">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -70,8 +78,13 @@
                                             <td>status</td>
                                             <td>
                                                 <a href="{{ route('admin.event.edit', ['event' => $event->id]) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Edit</a> 
-                                                <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                                                <button type="button" class="btn btn-info btn-sm"><i class="fas fa-users"></i> Users</button>
+                                                <a href="#" class="btn btn-info btn-sm"><i class="fas fa-users"></i> Users</a>
+                                                <form action="{{ route('admin.event.destroy', $event->id) }}" method="POST" class="delete">
+                                                    @csrf
+                                                    @method('delete')
+
+                                                    <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                                </form>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -105,4 +118,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"
         integrity="sha512-KBeR1NhClUySj9xBB0+KRqYLPkM6VvXiiWaSz/8LCQNdRpUm38SWUrj0ccNDNSkwCD9qPA4KobLliG26yPppJA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(".delete").on("submit", function(){
+            return confirm("Are you sure?");
+        });
+    </script>
 @endsection

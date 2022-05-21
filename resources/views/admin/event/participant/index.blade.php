@@ -82,7 +82,7 @@
                                                 <td>{{ $participant->name }}</td>
                                                 <td>{{ $participant->email }}</td>
                                                 <td>{{ $participant->phone_with_prefix }}</td>
-                                                <td><img src="{{ optional($participant->image)->thumbnail ?? 'https://via.placeholder.com/100' }}"
+                                                <td><img src="{{ optional($participant->image)->thumbnail_url ?? 'https://via.placeholder.com/100' }}"
                                                         alt="$participant->name"></td>
                                                 <td>
                                                     <form style="width: inherit"
@@ -90,9 +90,11 @@
                                                         method="POST">
                                                         @csrf
 
-                                                        <a href="#" class="btn btn-success btn-sm"><i
+                                                        <button type="button" class="btn btn-success btn-sm"
+                                                            data-toggle="modal"
+                                                            data-target="#participant-{{ $participant->id }}"><i
                                                                 class="fas fa-edit"></i>
-                                                            Edit</a>
+                                                            Edit</button>
                                                         <button type="submit" onclick="return confirm('Are you sure?')"
                                                             class="btn btn-danger btn-sm"><i class="fas fa-trash"></i>
                                                             Remove</a>
@@ -147,6 +149,55 @@
                     </div>
                 </div>
             </div>
+            @foreach ($participants as $participant)
+                <div class="modal fade" id="participant-{{ $participant->id }}" data-backdrop="static"
+                    data-keyboard="false" tabindex="-1" aria-labelledby="import" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="participant-{{ $participant->id }}">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form
+                                action="{{ route('admin.event.participant.update', ['event' => $event->id, 'participant' => $participant->id]) }}"
+                                method="post" enctype="multipart/form-data">
+                                @csrf
+
+                                <input type="hidden" name="page" value="{{ request()->page }}">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input class="form-control" type="text" name="name" id="name"
+                                            value="{{ $participant->name }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone_code">Phone Code</label>
+                                        <input class="form-control" type="text" name="phone_code" id="phone_code"
+                                            value="{{ $participant->phone_code }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number</label>
+                                        <input class="form-control" type="text" name="phone" id="phone"
+                                            value="{{ $participant->phone }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customFile">Choose file</label>
+                                        <input type="file" class="form-control" name="file" accept="image/png, image/jpeg"
+                                            class="custom-file-input" id="customFile"> Current file:
+                                        {{ optional($participant->image)->url ?? '-' }}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </section>
         <!-- /.content -->
     </div>

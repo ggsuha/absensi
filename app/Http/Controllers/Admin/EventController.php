@@ -76,10 +76,10 @@ class EventController extends Controller
 
             throw $th;
         }
-        
+
         return redirect()
-                ->route('admin.event.edit', ['event' => $event->id])
-                ->with('success', 'Event has been save!');
+            ->route('admin.event.edit', ['event' => $event->id])
+            ->with('success', 'Event has been save!');
     }
 
     /**
@@ -116,7 +116,7 @@ class EventController extends Controller
 
             if ($request->logo) {
                 $imageName = $this->storeImage($request->logo, Event::IMAGE_FOLDER, null, true);
-    
+
                 $event->image()->update([
                     'url' => $imageName
                 ]);
@@ -129,10 +129,10 @@ class EventController extends Controller
 
             throw $th;
         }
-        
+
         return redirect()
-                ->route('admin.event.edit', ['event' => $event->id])
-                ->with('success', 'Event has been updated!');
+            ->route('admin.event.edit', ['event' => $event->id])
+            ->with('success', 'Event has been updated!');
     }
 
     /**
@@ -145,8 +145,8 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()
-                ->route('admin.event.index')
-                ->with('success', 'Event has been deleted!');
+            ->route('admin.event.index')
+            ->with('success', 'Event has been deleted!');
     }
 
     /**
@@ -186,8 +186,8 @@ class EventController extends Controller
         }
 
         return redirect()
-                ->route('admin.event.participant', ['event' => $event->id])
-                ->with('success', 'Participant has been updated!');
+            ->route('admin.event.participant', ['event' => $event->id])
+            ->with('success', 'Participant has been updated!');
     }
 
     /**
@@ -214,7 +214,47 @@ class EventController extends Controller
         $event->participants()->detach($participant->id);
 
         return redirect()
-                ->route('admin.event.participant', ['event' => $event->id])
-                ->with('success', 'Participant has been removed from this event!');
+            ->route('admin.event.participant', ['event' => $event->id])
+            ->with('success', 'Participant has been removed from this event!');
+    }
+
+    /**
+     * Process participant export.
+     *
+     * @param \App\Models\Event $event
+     * @param \App\Models\Participant $participant
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function participantUpdate(Event $event, Participant $participant, Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $participant->name = $request->name;
+            $participant->phone_code = $request->phone_code;
+            $participant->phone = $request->phone;
+
+            $participant->save();
+
+            ini_set('memory_limit', '1024M');
+
+            if ($request->file) {
+                $imageName = $this->storeImage($request->file, Participant::IMAGE_FOLDER, null, true);
+
+                $participant->image()->updateOrCreate([], [
+                    'url' => $imageName
+                ]);
+            }
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            throw $th;
+        }
+
+        return redirect()
+            ->route('admin.event.participant', ['event' => $event->id, 'page' => $request->page])
+            ->with('success', 'Participant has been updated!');
     }
 }

@@ -33,6 +33,7 @@ Route::name('admin.')->group(function () {
             Route::post('{event}/participant', [EventController::class, 'import'])->name('participant.import');
             Route::get('{event}/participant/export', [EventController::class, 'export'])->name('participant.export');
             Route::post('{event}/participant/{participant}/remove', [EventController::class, 'remove'])->name('participant.remove');
+            Route::post('{event}/participant/{participant}/update', [EventController::class, 'participantUpdate'])->name('participant.update');
         });
 
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

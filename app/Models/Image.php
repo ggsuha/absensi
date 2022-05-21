@@ -13,7 +13,7 @@ class Image extends Model
      *
      * @var array
      */
-    protected $fillable = [ 'url' ];
+    protected $fillable = ['url'];
 
     /**
      * Bootstrap the model and its traits.
@@ -31,7 +31,7 @@ class Image extends Model
         });
 
         self::updating(function (Image $item) {
-            $item->getRawOriginal()->deleteImage();
+            $item->deleteImage();
 
             return true;
         });
@@ -44,7 +44,7 @@ class Image extends Model
      */
     public function getThumbnailUrlAttribute()
     {
-       return asset('storage/' . $this->imageable_type_class::IMAGE_FOLDER . 'thumbnail/' . $this->url);
+        return asset('storage/' . $this->imageable_type_class::IMAGE_FOLDER . 'thumbnail/' . $this->url);
     }
 
     /**
@@ -88,8 +88,8 @@ class Image extends Model
      */
     public function deleteImage()
     {
-        Storage::delete("public/" . $this->imageable_type_class::IMAGE_FOLDER . 'thumbnail/' . $this->url);
+        Storage::delete("public/" . $this->imageable_type_class::IMAGE_FOLDER . 'thumbnail/' . $this->getRawOriginal('url'));
 
-        return Storage::delete("public/" . $this->imageable_type_class::IMAGE_FOLDER . $this->url);
+        return Storage::delete("public/" . $this->imageable_type_class::IMAGE_FOLDER . $this->getRawOriginal('url'));
     }
 }

@@ -90,7 +90,8 @@
 
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Submit</button>
-                                        <a href="#" class="btn btn-info">Users</a>
+                                        <a href="{{ route('admin.event.participant', ['event' => $event->id]) }}"
+                                            class="btn btn-info">User List</a>
                                     </div>
                                 </div>
                             </form>

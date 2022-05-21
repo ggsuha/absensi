@@ -16,18 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::name('admin.')->group(function(){
-    Route::middleware('guest')->group(function() {
+Route::name('admin.')->group(function () {
+    Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/login', [AuthController::class, 'process'])->name('login-process');
     });
 
-    Route::middleware('auth')->group(function() {
-        Route::get('/', function() {
+    Route::middleware('auth')->group(function () {
+        Route::get('/', function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
         Route::resource('event', 'EventController');
+        Route::group(['prefix' => 'event', 'as' => 'event.'], function () {
+            Route::get('{event}/participant', [EventController::class, 'participant'])->name('participant');
+            Route::post('{event}/participant', [EventController::class, 'import'])->name('participant.import');
+            Route::get('{event}/participant/export', [EventController::class, 'export'])->name('participant.export');
+            Route::post('{event}/participant/{participant}/remove', [EventController::class, 'remove'])->name('participant.remove');
+        });
 
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     });

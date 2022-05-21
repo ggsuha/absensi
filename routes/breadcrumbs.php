@@ -31,3 +31,9 @@ Breadcrumbs::for('event.edit', function (BreadcrumbTrail $trail) {
     $trail->parent('event');
     $trail->push('Edit Event');
 });
+
+// Home > Event > Participant
+Breadcrumbs::for('event.participant', function (BreadcrumbTrail $trail, $event) {
+    $trail->parent('event');
+    $trail->push('Participant', route('admin.event.participant', ['event' => $event]));
+});

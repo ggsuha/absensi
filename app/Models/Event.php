@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,5 +57,57 @@ class Event extends Model
     public function image()
     {
         return $this->morphOne(Image::class, 'imageable');
+    }
+
+    /**
+     * manyToMany relationship with \App\Models\Participant
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function participants()
+    {
+        return $this->belongsToMany(Participant::class);
+    }
+
+    /**
+     * get status attribute
+     *
+     * @return string
+     */
+    public function getStatusAttribute()
+    {
+        $today = Carbon::today();
+
+        if ($this->start->lt($today)) {
+            return 'Closed';
+        } elseif ($this->start->gt($today)) {
+            return 'Upcoming';
+        }
+
+        return 'Opened';
+    }
+
+    /**
+     * get status attribute
+     *
+     * @return string
+     */
+    public function getStatusBadgeAttribute()
+    {
+        $status = $this->status;
+
+        switch ($status) {
+            case 'Upcoming':
+                return 'info';
+                break;
+
+            case 'Opened':
+                return 'success';
+                break;
+
+            default:
+                return 'danger';
+                break;
+        }
     }
 }

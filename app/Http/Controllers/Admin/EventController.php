@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ParticipantExport;
 use App\Http\Controllers\Controller;
+use App\Imports\ParticipantImport;
 use App\Models\Event;
+use App\Models\Participant;
 use App\Traits\ImageHandling;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EventController extends Controller
 {
@@ -16,6 +20,7 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -80,7 +85,8 @@ class EventController extends Controller
     /**
      * Display a edit page.
      *
-     * @return \App\Models\Event  $event
+     * @param \App\Models\Event  $event
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit(Event $event)
     {
@@ -141,5 +147,74 @@ class EventController extends Controller
         return redirect()
                 ->route('admin.event.index')
                 ->with('success', 'Event has been deleted!');
+    }
+
+    /**
+     * Display a listing of the participant resource.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function participant(Request $request, Event $event)
+    {
+        $offset   = (($request->page ?? 1) - 1) * 10;
+        $participants = $event->participants()->offset($offset)->paginate(10);
+
+        return view('admin.event.participant.index', compact('event', 'participants', 'offset'));
+    }
+
+    /**
+     * Process participant import.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function import(Request $request, Event $event)
+    {
+        DB::beginTransaction();
+
+        try {
+            $event->participants()->detach();
+
+            Excel::import(new ParticipantImport, request()->file('file'));
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            throw $th;
+        }
+
+        return redirect()
+                ->route('admin.event.participant', ['event' => $event->id])
+                ->with('success', 'Participant has been updated!');
+    }
+
+    /**
+     * Process participant export.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Event $event
+     * @return \Illuminate\Http\Response
+     */
+    public function export(Request $request, Event $event)
+    {
+        return Excel::download(new ParticipantExport($event), "{$event->slug}-participant-collection.xlsx");
+    }
+
+    /**
+     * Process participant export.
+     *
+     * @param \App\Models\Event $event
+     * @param \App\Models\Participant $participant
+     * @return \Illuminate\Http\Response
+     */
+    public function remove(Event $event, Participant $participant)
+    {
+        $event->participants()->detach($participant->id);
+
+        return redirect()
+                ->route('admin.event.participant', ['event' => $event->id])
+                ->with('success', 'Participant has been removed from this event!');
     }
 }

@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\ParticipantExport;
 use App\Http\Controllers\Controller;
 use App\Imports\ParticipantImport;
+use App\Mail\SendQrCode;
 use App\Models\Event;
 use App\Models\Participant;
 use App\Traits\ImageHandling;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class EventController extends Controller
 {
@@ -161,6 +165,28 @@ class EventController extends Controller
         $participants = $event->participants()->offset($offset)->paginate(10);
 
         return view('admin.event.participant.index', compact('event', 'participants', 'offset'));
+    }
+
+    /**
+     * Process participant export.
+     *
+     * @param \App\Models\Event $event
+     * @return \Illuminate\Http\Response
+     */
+    public function sendEmail(Event $event)
+    {
+        foreach ($event->participants as $participant) {
+            if (!Storage::exists("public/upload/qr-codes/{$participant->email}.png")) {
+                $code = QrCode::size(300)->generate($participant->email);
+                Storage::put("public/upload/qr-codes/{$participant->email}.png", $code);
+            }
+
+            Mail::to($participant)->queue(new SendQrCode($event, $participant));
+        }
+
+        return redirect()
+            ->route('admin.event.participant', ['event' => $event->id])
+            ->with('success', 'Email sending is in process!');
     }
 
     /**

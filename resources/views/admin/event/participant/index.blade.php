@@ -28,7 +28,7 @@
                         <h1 class="m-0">{{ $event->title }} - Participant List</h1>
                     </div><!-- /.col -->
 
-                    {{ Breadcrumbs::render('event.participant', $event->id) }}
+                    {{ Breadcrumbs::render('event.participant', $event) }}
 
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -51,6 +51,12 @@
                         <div class="card">
                             <div class="card-header">
                                 {{-- <h3 class="card-title">Bordered Table</h3> --}}
+                                <h3 class="card-title">
+                                    <a href="{{ route('admin.event.participant.send', ['event' => $event->id]) }}"
+                                        class="btn btn-info btn">
+                                        Send QR Code
+                                    </a>
+                                </h3>
                                 <h3 class="card-title" style="float: right">
                                     <button type="button" class="btn btn-primary btn" data-toggle="modal"
                                         data-target="#import">

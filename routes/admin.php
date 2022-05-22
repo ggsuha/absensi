@@ -32,6 +32,7 @@ Route::name('admin.')->group(function () {
             Route::get('{event}/participant', [EventController::class, 'participant'])->name('participant');
             Route::post('{event}/participant', [EventController::class, 'import'])->name('participant.import');
             Route::get('{event}/participant/export', [EventController::class, 'export'])->name('participant.export');
+            Route::get('{event}/participant/send', [EventController::class, 'sendEmail'])->name('participant.send');
             Route::post('{event}/participant/{participant}/remove', [EventController::class, 'remove'])->name('participant.remove');
             Route::post('{event}/participant/{participant}/update', [EventController::class, 'participantUpdate'])->name('participant.update');
         });

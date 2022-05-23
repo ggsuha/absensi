@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
-use App\Models\User;
+use App\Models\Event;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -14,10 +14,18 @@ class HomeController extends Controller
      */
     public function __invoke()
     {
-        User::factory()->make()->save();
-        dd('a');
-        // $projects = Project::limit(3)->get();
+        $events = Event::orderBy('start', 'desc')
+            ->where('start', Carbon::today())
+            ->limit(10)
+            ->get();
+        $ongoings = Event::orderBy('start', 'desc')
+            ->where(
+                'start',
+                '<>',
+                Carbon::today()
+            )->limit(10)
+            ->get();
 
-        // return view('user.home', compact('projects'));
+        return view('user.home', compact('events', 'ongoings'));
     }
 }

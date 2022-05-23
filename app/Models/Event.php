@@ -84,7 +84,7 @@ class Event extends Model
             return 'Upcoming';
         }
 
-        return 'Opened';
+        return 'Ongoing';
     }
 
     /**

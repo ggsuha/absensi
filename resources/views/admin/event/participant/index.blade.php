@@ -77,6 +77,7 @@
                                             <th>Name</th>
                                             <th style="width: 300px">Email</th>
                                             <th style="width: 150px">No. HP</th>
+                                            <th style="width: 120px">Check In</th>
                                             <th style="width: 120px">Foto</th>
                                             <th style="width: 200px">Action</th>
                                         </tr>
@@ -88,6 +89,15 @@
                                                 <td>{{ $participant->name }}</td>
                                                 <td>{{ $participant->email }}</td>
                                                 <td>{{ $participant->phone_with_prefix }}</td>
+                                                @if ($participant->getRawOriginal('pivot_check_in'))
+                                                    <td class="text-center">
+                                                        <span class="badge badge-success">Yes</span>
+                                                    </td>
+                                                @else
+                                                    <td class="text-center">
+                                                        <span class="badge badge-danger">No</span>
+                                                    </td>
+                                                @endif
                                                 <td><img src="{{ optional($participant->image)->thumbnail_url ?? 'https://via.placeholder.com/100' }}"
                                                         alt="$participant->name"></td>
                                                 <td>

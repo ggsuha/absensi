@@ -39,6 +39,7 @@ class ParticipantExport implements FromQuery, WithColumnFormatting, WithMapping,
             'Name',
             'Email',
             'Phone Number',
+            'Check In',
         ];
     }
 
@@ -78,6 +79,7 @@ class ParticipantExport implements FromQuery, WithColumnFormatting, WithMapping,
             $participant->name,
             $participant->email,
             $participant->phone_with_prefix,
+            $participant->getRawOriginal('pivot_check_in') ?? '-'
         ];
     }
 
@@ -89,7 +91,10 @@ class ParticipantExport implements FromQuery, WithColumnFormatting, WithMapping,
     public function columnFormats(): array
     {
         return [
+            'A' => NumberFormat::FORMAT_TEXT,
+            'B' => NumberFormat::FORMAT_TEXT,
             'C' => NumberFormat::FORMAT_NUMBER,
+            'D' => NumberFormat::FORMAT_TEXT,
         ];
     }
 }

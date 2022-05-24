@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 
+
 class EventController extends Controller
 {
     /**
@@ -35,4 +36,5 @@ class EventController extends Controller
             'name' => $participant->name
         ]);
     }
+   
 }

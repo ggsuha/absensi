@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/event/{slug}/scan_checkin', [EventController::class, 'scan_checkin']);
+Route::post('/event/{slug}/scan_checkin', [EventController::class, 'scan_checkin'])->name('check-in');

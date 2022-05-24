@@ -17,3 +17,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/event/{slug}', [EventController::class, 'show'])->name('event');
+Route::get('/event/{slug}/checkin', [EventController::class, 'checkin'])->name('event.checkin');

@@ -25,7 +25,6 @@ Route::name('admin.')->group(function () {
 
     Route::middleware('auth')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-
         Route::resource('event', 'EventController');
         Route::group(['prefix' => 'event', 'as' => 'event.'], function () {
             Route::get('{event}/participant', [EventController::class, 'participant'])->name('participant');

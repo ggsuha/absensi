@@ -75,8 +75,19 @@
                                                 <td>{{ $offset + $loop->iteration }}</td>
                                                 <td>{{ $event->title }}</td>
                                                 <td>{{ $event->start->format('d M Y') }}</td>
-                                                <td class="text-center"><span
-                                                        class="badge badge-danger">{{ $event->status }}</span></td>
+                                                @if ($event->status == 'Closed')
+                                                    <td class="text-center">
+                                                        <span class="badge badge-danger">{{ $event->status }}</span>
+                                                    </td>
+                                                @elseif($event->status == 'Ongoing')
+                                                    <td class="text-center">
+                                                        <span class="badge badge-info">{{ $event->status }}</span>
+                                                    </td>
+                                                @else
+                                                    <td class="text-center">
+                                                        <span class="badge badge-success">{{ $event->status }}</span>
+                                                    </td>
+                                                @endif
                                                 <td>
                                                     <form action="{{ route('admin.event.destroy', $event->id) }}"
                                                         method="POST" class="delete">

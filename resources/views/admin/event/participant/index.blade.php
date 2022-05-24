@@ -78,7 +78,6 @@
                                             <th style="width: 300px">Email</th>
                                             <th style="width: 150px">No. HP</th>
                                             <th style="width: 120px">Check In</th>
-                                            <th style="width: 120px">Foto</th>
                                             <th style="width: 200px">Action</th>
                                         </tr>
                                     </thead>
@@ -98,8 +97,6 @@
                                                         <span class="badge badge-danger">No</span>
                                                     </td>
                                                 @endif
-                                                <td><img src="{{ optional($participant->image)->thumbnail_url ?? 'https://via.placeholder.com/100' }}"
-                                                        alt="$participant->name"></td>
                                                 <td>
                                                     <form style="width: inherit"
                                                         action="{{ route('admin.event.participant.remove', ['event' => $event->id, 'participant' => $participant->id]) }}"
@@ -120,7 +117,7 @@
                                             </tr>
                                         @endforeach
                                         @if ($participants->isEmpty())
-                                            <td colspan="6">
+                                            <td colspan="5">
                                                 <center>This event does not have any participant yet</center>
                                             </td>
                                         @endif
@@ -197,12 +194,6 @@
                                         <label for="phone">Phone Number</label>
                                         <input class="form-control" type="text" name="phone" id="phone"
                                             value="{{ $participant->phone }}" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="customFile">Choose file</label>
-                                        <input type="file" class="form-control" name="file" accept="image/png, image/jpeg"
-                                            class="custom-file-input" id="customFile"> Current file:
-                                        {{ optional($participant->image)->url ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="modal-footer">

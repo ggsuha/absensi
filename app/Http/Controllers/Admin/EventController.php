@@ -61,21 +61,8 @@ class EventController extends Controller
 
             $event->save();
 
-            ini_set('memory_limit', '1024M');
-
-            $imageName = $this->storeImage($request->logo, Event::IMAGE_FOLDER, null, true);
-
-            $event->image()->create([
-                'url' => $imageName
-            ]);
-
             DB::commit();
         } catch (\Throwable $th) {
-            //delete stored image on storage
-            if ($event) {
-                $event->image->deleteImage();
-            }
-
             DB::rollBack();
 
             throw $th;
@@ -115,16 +102,6 @@ class EventController extends Controller
             $event->start       = $request->start;
 
             $event->save();
-
-            ini_set('memory_limit', '1024M');
-
-            if ($request->logo) {
-                $imageName = $this->storeImage($request->logo, Event::IMAGE_FOLDER, null, true);
-
-                $event->image()->update([
-                    'url' => $imageName
-                ]);
-            }
 
             DB::commit();
         } catch (\Throwable $th) {
@@ -261,17 +238,7 @@ class EventController extends Controller
             $participant->phone = $request->phone;
 
             $participant->save();
-
-            ini_set('memory_limit', '1024M');
-
-            if ($request->file) {
-                $imageName = $this->storeImage($request->file, Participant::IMAGE_FOLDER, null, true);
-
-                $participant->image()->updateOrCreate([], [
-                    'url' => $imageName
-                ]);
-            }
-
+            
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();

@@ -30,15 +30,15 @@ class AuthController extends Controller
             'email' => ['required', 'string', 'max:50'],
             'password' => ['required'],
         ]);
- 
+
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
- 
+
             return redirect()->intended('admin.dashboard');
         }
- 
+
         return back()->withErrors([
-            'invalid' => trans('validation.custom.invalid'),
+            'invalid' => trans('auth.failed'),
         ])->onlyInput('email', 'remember');
     }
 
@@ -51,11 +51,11 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-    
+
         $request->session()->invalidate();
-    
+
         $request->session()->regenerateToken();
-    
+
         return redirect()->route('admin.dashboard');
     }
 }

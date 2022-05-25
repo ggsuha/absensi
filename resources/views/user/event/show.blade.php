@@ -68,9 +68,9 @@ if (ws) {
   ws.onmessage = ({ data }) => {
      
      console.log(data);
-     $("#change-text").fadeOut();
+     $("#change-text").fadeOut(1000);
      document.getElementById("change-text").innerText=data;
-     $("#change-text").fadeIn();
+     $("#change-text").fadeIn(1000);
      text = String(data);
     //  responsiveVoice.speak(text,{pitch: 13,rate: 0.8});
      responsiveVoice.speak(text);

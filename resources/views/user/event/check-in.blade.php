@@ -67,7 +67,7 @@
             ws.onerror = ws.onopen = ws.onclose = null;
             ws.close();
         }
-        ws = new WebSocket('wss://ws.ahaamedia.com:6969');
+        ws = new WebSocket('wss://s3858.sgp1.piesocket.com/v3/1?api_key=6MMSFSXcCtghCYgRUdX8rmfSyPy5LCDl4EF7MuTK&notify_self');
         ws.onopen = () => {
             // console.log('Connection opened!');
         }

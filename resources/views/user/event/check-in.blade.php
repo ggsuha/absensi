@@ -83,9 +83,9 @@
 
         function myFunction() {
             var input = document.getElementById("search").value
-
+            var email = input.replace(/['"]+/g, '@');
             var form = new FormData();
-            form.append("email", input);
+            form.append("email", email);
 
             var settings = {
                 "url": "{{ route('check-in', ['slug' => $event->id]) }}",

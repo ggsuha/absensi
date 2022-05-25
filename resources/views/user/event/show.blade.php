@@ -20,6 +20,11 @@
             padding-top: 20%;
             font-size: 40px;
             font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px #63b7a7;
+        }
+        body{
+            background-color: #000000;
         }
 
     </style>
@@ -71,12 +76,12 @@ if (ws) {
      $("#change-text").fadeOut(1000);
      setTimeout(function(){
         document.getElementById("change-text").innerText=data;
-        $("#change-text").fadeIn(1000);
+        $("#change-text").fadeIn(1500);
+        responsiveVoice.speak(data);
      },1000);
      
-     text = String(data);
     //  responsiveVoice.speak(text,{pitch: 13,rate: 0.8});
-     responsiveVoice.speak(text);
+     
  
 };
   

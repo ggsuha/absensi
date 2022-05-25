@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Image;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic;
 
 trait ImageHandling
@@ -24,7 +25,10 @@ trait ImageHandling
         }
 
         if (!file_exists(public_path('storage/' . $folder))) {
-            mkdir(public_path('storage/' . $folder), 755, true);
+            Log::info('mau create folder');
+            $a = mkdir(public_path('storage/' . $folder), 755, true);
+
+            Log::info($a);
         }
 
         if ($thumbnail) {

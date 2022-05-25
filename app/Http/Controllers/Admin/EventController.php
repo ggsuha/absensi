@@ -12,6 +12,7 @@ use App\Traits\ImageHandling;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -119,7 +120,10 @@ class EventController extends Controller
             ini_set('memory_limit', '1024M');
 
             if ($request->logo) {
+                Log::info("this input content logo");
                 $imageName = $this->storeImage($request->logo, Event::IMAGE_FOLDER, null, true);
+
+                Log::info("image name: " . $imageName);
 
                 $event->image()->update([
                     'url' => $imageName

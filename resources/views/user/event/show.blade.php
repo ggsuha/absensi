@@ -31,7 +31,7 @@
 <div class="container-fluid">
 <div class="row">
     <div class="col-md-12">
-  <p id="change-text">Shining Text Animation Effects</p>
+  <p id="change-text"></p>
     </div>
 </div>
 </div>

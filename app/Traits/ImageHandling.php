@@ -23,7 +23,8 @@ trait ImageHandling
             $base64_str = substr($image, strpos($image, ",") + 1);
             $image      = base64_decode($base64_str);
         }
-
+Log::info('check folder ' . $folder);
+Log::info(file_exists(public_path('storage/' . $folder)));
         if (!file_exists(public_path('storage/' . $folder))) {
             Log::info('mau create folder');
             $a = mkdir(public_path('storage/' . $folder), 755, true);

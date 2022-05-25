@@ -33,7 +33,7 @@ class ParticipantImport implements OnEachRow, WithUpserts, WithHeadingRow
 
         $event = request()->event;
 
-        $event->participants()->attach($participant->id, ['check_in' => $row['check_in']]);
+        $event->participants()->attach($participant->id, ['check_in' => $row['check_in'] == '-' ? null : $row['check_in']]);
         $event->save();
 
         return $participant;

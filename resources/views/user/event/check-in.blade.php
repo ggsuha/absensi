@@ -13,7 +13,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <link href="{{ asset('css/style2.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/style2.css') }}" rel="stylesheet"> --}}
 
 </head>
 
@@ -101,8 +101,11 @@
             $.ajax(settings).done(function(response) {
                 if (response.error) {
                     toastr.error(response.error);
-                } else {
-                    kirimsocket(response.name);
+                } else if (response.warning) {
+                    toastr.warning(response.warning);
+                } else  {
+                    kirimsocket(JSON.stringify({user: response.name, event: "{{ $event->slug }}"}));
+                    toastr.success("User berhasil check in!");
                 }
 
                 document.getElementById("search").value = "";

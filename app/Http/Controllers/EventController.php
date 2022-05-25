@@ -50,7 +50,13 @@ class EventController extends Controller
         
         if (!$participant) {
             return response()->json([
-                'error' => "User dengan email {$request->email} tidak terdaftara di event ini."
+                'error' => "User dengan email {$request->email} tidak terdaftar di event ini."
+            ]);
+        }
+
+        if ($participant->getRawOriginal('pivot_check_in')) {
+            return response()->json([
+                'warning' => "User {$participant->name} sudah check in sebelumnya."
             ]);
         }
 

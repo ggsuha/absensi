@@ -82,8 +82,16 @@
                     </article>
                 </a>
             @endforeach
+
+            @if ($ongoings->isEmpty() && $events->isEmpty())
+                <div class="no_decor">
+                    <span class="leaderboard__name">
+                        <center>Belum ada event</center>
+                    </span>
+                </div>
+            @endif
         </main>
-    </div>
+        </div>
 </body>
 
 </html>

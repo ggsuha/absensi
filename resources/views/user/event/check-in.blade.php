@@ -58,8 +58,9 @@
         integrity="sha512-jtr9/t8rtBf1Sv832XjG1kAtUECQCqFnTAJWccL8CSC82VGzkPPih8rjtOfiiRKgqLXpLA1H/uQ/nq2bkHGWTQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('js/scripts2.js') }}"></script>
-    <script src="https://code.responsivevoice.org/responsivevoice.js?key=wzVtuAca"></script>
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=wzVtuAca"></script>
     <script>
         let ws;
 
@@ -106,6 +107,7 @@
                 } else  {
                     kirimsocket(JSON.stringify({user: response.name, event: "{{ $event->slug }}"}));
                     toastr.success("User berhasil check in!");
+                    responsiveVoice.speak("Welcome. "+response.name);
                 }
 
                 document.getElementById("search").value = "";

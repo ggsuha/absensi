@@ -394,7 +394,7 @@
                             <center>{!! QrCode::size(300)->generate($participant->email) !!}</center>
                         </span> --}}
                         <span>
-                            <center><img src="{{ asset("storage/upload/qr-codes/{$participant->email}.jpg") }}" alt="{{ $participant->email }}"></center>
+                            <center><img src="{{ asset("storage/upload/qr-codes/{$participant->email}.png") }}" alt="{{ $participant->email }}"></center>
                         </span>
                     </td>
                 </tr><!-- end tr -->

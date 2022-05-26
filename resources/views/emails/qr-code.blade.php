@@ -396,9 +396,9 @@
                         <span>
                             <center>
                                 <img src="{{ asset("storage/upload/qr-codes/{$participant->email}.png") }}"
-                                    alt="{{ $participant->email }}">
+                                    alt="{{ $participant->email }}"><br>
                                 <a href="{{ asset("storage/upload/qr-codes/{$participant->email}.png") }}" download=><strong
-                                        style="color:#30e3ca; font-size: x-large;">Download QR Code</strong></a>
+                                        style="color:#30e3ca; font-size: x-large;">Open QR Code</strong></a>
                             </center>
                         </span>
                     </td>

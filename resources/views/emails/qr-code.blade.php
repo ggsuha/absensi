@@ -390,8 +390,11 @@
 
                 <tr>
                     <td valign="middle" class="hero bg_white" style="padding: 0 0 2em 0;">
-                        <span>
+                        {{-- <span>
                             <center>{!! QrCode::size(300)->generate($participant->email) !!}</center>
+                        </span> --}}
+                        <span>
+                            <center><img src="{{ asset("storage/upload/qr-codes/{$participant->email}.svg") }}" alt="{{ $participant->email }}" sizes="300"></center>
                         </span>
 
                         {{-- <img src="images/email.png" alt=""

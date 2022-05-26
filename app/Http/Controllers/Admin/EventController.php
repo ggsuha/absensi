@@ -177,8 +177,8 @@ class EventController extends Controller
     {
         foreach ($event->participants as $participant) {
             if (!Storage::exists("public/upload/qr-codes/{$participant->email}.png")) {
-                $code = QrCode::size(300)->generate($participant->email);
-                Storage::put("public/upload/qr-codes/{$participant->email}.png", $code);
+                $code = QrCode::format('svg')->size(300)->backgroundColor(255, 255, 255)->generate($participant->email);
+                Storage::put("public/upload/qr-codes/{$participant->email}.svg", $code);
             }
 
             Mail::to($participant)->queue(new SendQrCode($event, $participant));
@@ -261,7 +261,7 @@ class EventController extends Controller
             $participant->phone = $request->phone;
 
             $participant->save();
-            
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();

@@ -177,7 +177,7 @@ class EventController extends Controller
     {
         foreach ($event->participants as $participant) {
             if (!Storage::exists("public/upload/qr-codes/{$participant->email}.png")) {
-                $code = QrCode::format('png')->size(300)->backgroundColor(255, 255, 255)->generate($participant->email);
+                $code = QrCode::format('png')->size(700)->backgroundColor(255, 255, 255)->generate($participant->email);
                 Storage::put("public/upload/qr-codes/{$participant->email}.png", $code);
             }
 

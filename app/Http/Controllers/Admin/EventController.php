@@ -176,9 +176,9 @@ class EventController extends Controller
     public function sendEmail(Event $event)
     {
         foreach ($event->participants as $participant) {
-            if (!Storage::exists("public/upload/qr-codes/{$participant->email}.svg")) {
-                $code = QrCode::format('svg')->size(300)->backgroundColor(255, 255, 255)->generate($participant->email);
-                Storage::put("public/upload/qr-codes/{$participant->email}.svg", $code);
+            if (!Storage::exists("public/upload/qr-codes/{$participant->email}.png")) {
+                $code = QrCode::format('png')->size(300)->backgroundColor(255, 255, 255)->generate($participant->email);
+                Storage::put("public/upload/qr-codes/{$participant->email}.png", $code);
             }
 
             Mail::to($participant)->queue(new SendQrCode($event, $participant));

@@ -23,6 +23,7 @@ trait ImageHandling
             $base64_str = substr($image, strpos($image, ",") + 1);
             $image      = base64_decode($base64_str);
         }
+        clearstatcache();
 Log::info('check folder ' . $folder);
 Log::info(file_exists(public_path('storage/' . $folder)));
         if (!file_exists(public_path('storage/' . $folder))) {

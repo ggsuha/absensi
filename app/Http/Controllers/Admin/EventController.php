@@ -181,7 +181,7 @@ class EventController extends Controller
                     ->size(700)
                     ->backgroundColor(241, 241, 241)
                     ->eyeColor(0, 255, 255, 255, 0, 0, 0)
-                    ->margin(25)
+                    ->margin(5)
                     ->generate($participant->email);
                 Storage::put("public/upload/qr-codes/{$participant->email}.png", $code);
             }

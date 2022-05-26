@@ -52,9 +52,6 @@ class SendQrCode extends Mailable
 
         return $this->view('emails.qr-code', compact('event', 'participant'))
             ->subject("Kode Akses $event->title - $participant->name")
-            ->attach(storage_path("app/public/upload/qr-codes/$participant->email.png"), [
-                'as' => "$event->title - $participant->name.pdf",
-                'mime' => 'application/pdf',
-            ]);;
+            ->attach(storage_path("app/public/upload/qr-codes/$participant->email.jpg"));
     }
 }

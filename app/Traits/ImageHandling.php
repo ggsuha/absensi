@@ -25,6 +25,7 @@ trait ImageHandling
         }
         clearstatcache();
 Log::info('check folder ' . $folder);
+Log::info('direktori: ' . public_path('storage/' . $folder));
 Log::info(file_exists(public_path('storage/' . $folder)));
         if (!file_exists(public_path('storage/' . $folder))) {
             Log::info('mau create folder');

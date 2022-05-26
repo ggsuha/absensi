@@ -394,7 +394,12 @@
                             <center>{!! QrCode::size(300)->generate($participant->email) !!}</center>
                         </span> --}}
                         <span>
-                            <center><img src="{{ asset("storage/upload/qr-codes/{$participant->email}.png") }}" alt="{{ $participant->email }}"></center>
+                            <center>
+                                <img src="{{ asset("storage/upload/qr-codes/{$participant->email}.png") }}"
+                                    alt="{{ $participant->email }}">
+                                <a href="{{ asset("storage/upload/qr-codes/{$participant->email}.png") }}" download=><strong
+                                        style="color:#30e3ca; font-size: x-large;">Download QR Code</strong></a>
+                            </center>
                         </span>
                     </td>
                 </tr><!-- end tr -->
